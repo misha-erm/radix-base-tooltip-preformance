@@ -19,63 +19,37 @@
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
     hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   user-select: none;
-  animation-duration: 400ms;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
-}
-.TooltipContent[data-state="delayed-open"][data-side="top"] {
-  animation-name: slideDownAndFade;
-}
-.TooltipContent[data-state="delayed-open"][data-side="right"] {
-  animation-name: slideLeftAndFade;
-}
-.TooltipContent[data-state="delayed-open"][data-side="bottom"] {
-  animation-name: slideUpAndFade;
-}
-.TooltipContent[data-state="delayed-open"][data-side="left"] {
-  animation-name: slideRightAndFade;
 }
 
-@keyframes slideUpAndFade {
-  from {
-    opacity: 0;
-    transform: translateY(2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.performance-table {
+  margin: 1rem auto;
+  border-collapse: collapse;
+  min-width: 400px;
 }
 
-@keyframes slideRightAndFade {
-  from {
-    opacity: 0;
-    transform: translateX(-2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.performance-table th {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ddd;
 }
 
-@keyframes slideDownAndFade {
-  from {
-    opacity: 0;
-    transform: translateY(-2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.performance-table th:first-child {
+  text-align: left;
 }
 
-@keyframes slideLeftAndFade {
-  from {
-    opacity: 0;
-    transform: translateX(2px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.performance-table th:last-child {
+  text-align: right;
+}
+
+.performance-table td {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.performance-table td:first-child {
+  text-align: left;
+}
+
+.performance-table td:last-child {
+  text-align: right;
+  font-family: monospace;
 }

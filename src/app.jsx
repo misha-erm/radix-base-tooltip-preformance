@@ -55,6 +55,18 @@ const ItemWithTooltip = ({ idx }) => {
 //   );
 // };
 
+const List = () => {
+  return (
+    <div className="slow-list">
+      {Array.from({ length: 2000 }).map((_, idx) => (
+        <button key={idx}>
+          <Item idx={idx} />
+        </button>
+      ))}
+    </div>
+  );
+};
+
 const SlowList = () => {
   return (
     <TooltipPrimitive.Provider>
@@ -167,44 +179,80 @@ const RenderMeasure = ({ rerender }) => {
   );
 };
 
-export default function App() {
+const Demo = ({ mode }) => {
   const [, setCounter] = useState(0);
 
+  return (
+    <>
+      <RenderMeasure rerender={() => setCounter((prev) => prev + 1)} />
+
+      {mode === "radix" ? (
+        <SlowList />
+      ) : mode === "base" ? (
+        <BaseSlowList />
+      ) : mode === "base-lazy" ? (
+        <BaseLazyList />
+      ) : (
+        <List />
+      )}
+    </>
+  );
+};
+
+export default function App() {
   const [mode, setMode] = useState("radix");
 
   return (
     <div className="App">
       <h1>Tooltip performance demo</h1>
-      <p>Please open console, click "Re-render" and check the ouput </p>
+      <p>Click "Re-render" and see how long the interaction takes </p>
       <p>
-        To test the preformance without Tooltip - replace `ItemWithTooltip` with
-        `Item` in App.js
+        This demo was created back in 2023 to test how big is the impact of the
+        Tooltip on the performance. Recently base-ui was released so I wanted to
+        test how it performs.
       </p>
       <p>
-        On my MacBook Pro M2 Max the render takes around 50-60ms without Tooltip
-        and ~320ms with Tooltip. (on Macbook Pro 2018 it was around ~500ms)
+        Heare are the results I see on my MacBook Pro M2 Max with production
+        build and 4x CPU throttling:
       </p>
+
+      <table className="performance-table">
+        <thead>
+          <tr>
+            <th>Mode</th>
+            <th>Performance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Radix</td>
+            <td>250-280ms</td>
+          </tr>
+          <tr>
+            <td>Base UI</td>
+            <td>180ms</td>
+          </tr>
+          <tr>
+            <td>Base UI - detached with lazy activation</td>
+            <td>600-700ms</td>
+          </tr>
+          <tr>
+            <td>No tooltips</td>
+            <td>80ms</td>
+          </tr>
+        </tbody>
+      </table>
 
       <div style={{ marginBottom: "1rem" }}>
         <select value={mode} onChange={(e) => setMode(e.target.value)}>
           <option value="radix">Radix</option>
           <option value="base">Base UI</option>
           <option value="base-lazy">Base UI - lazy activation</option>
+          <option value="list">No tooltips</option>
         </select>
       </div>
 
-      <RenderMeasure
-        key={mode}
-        rerender={() => setCounter((prev) => prev + 1)}
-      />
-
-      {mode === "radix" ? (
-        <SlowList />
-      ) : mode === "base" ? (
-        <BaseSlowList />
-      ) : (
-        <BaseLazyList />
-      )}
+      <Demo key={mode} mode={mode} />
     </div>
   );
 }
