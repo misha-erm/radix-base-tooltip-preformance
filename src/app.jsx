@@ -23,10 +23,8 @@ const Item = ({ idx }) => <span>{`Item ${idx} - ${Math.random()}`}</span>;
 const ItemWithTooltip = ({ idx }) => {
   return (
     <TooltipPrimitive.Root>
-      <TooltipPrimitive.Trigger asChild>
-        <button>
-          <Item idx={idx} />
-        </button>
+      <TooltipPrimitive.Trigger>
+        <Item idx={idx} />
       </TooltipPrimitive.Trigger>
       <TooltipPrimitive.Portal>
         <TooltipPrimitive.Content className="TooltipContent">
@@ -81,10 +79,11 @@ const SlowList = () => {
 
 const BaseItemWithTooltip = ({ idx }) => {
   return (
-    <BaseTooltip.Root title={"This is title"}>
-      <BaseTooltip.Trigger render={<button />}>
+    <BaseTooltip.Root>
+      <BaseTooltip.Trigger>
         <Item idx={idx} />
       </BaseTooltip.Trigger>
+
       <BaseTooltip.Portal>
         <BaseTooltip.Positioner>
           <BaseTooltip.Popup className="TooltipContent">
@@ -96,6 +95,18 @@ const BaseItemWithTooltip = ({ idx }) => {
   );
 };
 
+const BaseSlowList = () => {
+  return (
+    <BaseTooltip.Provider>
+      <div className="slow-list">
+        {Array.from({ length: 2000 }).map((_, idx) => (
+          <BaseItemWithTooltip key={idx} idx={idx} />
+        ))}
+      </div>
+    </BaseTooltip.Provider>
+  );
+};
+
 const LazyBaseItemWithTooltip = ({ idx }) => {
   const [handle] = useState(() => BaseTooltip.createHandle());
   const [activated, setActivated] = useState(false);
@@ -104,16 +115,13 @@ const LazyBaseItemWithTooltip = ({ idx }) => {
     <>
       <BaseTooltip.Trigger
         handle={handle}
-        render={<button onMouseEnter={() => setActivated(true)} />}
+        onMouseEnter={() => setActivated(true)}
       >
         <Item idx={idx} />
       </BaseTooltip.Trigger>
 
       {activated ? (
-        <BaseTooltip.Root title={"This is title"}>
-          <BaseTooltip.Trigger>
-            <Item idx={idx} />
-          </BaseTooltip.Trigger>
+        <BaseTooltip.Root handle={handle}>
           <BaseTooltip.Portal>
             <BaseTooltip.Positioner>
               <BaseTooltip.Popup className="TooltipContent">
@@ -129,24 +137,12 @@ const LazyBaseItemWithTooltip = ({ idx }) => {
   );
 };
 
-const BaseSlowList = () => {
-  return (
-    <BaseTooltip.Provider>
-      <div className="slow-list">
-        {Array.from({ length: 2000 }).map((_, idx) => (
-          <LazyBaseItemWithTooltip key={idx} idx={idx} />
-        ))}
-      </div>
-    </BaseTooltip.Provider>
-  );
-};
-
 const BaseLazyList = () => {
   return (
     <BaseTooltip.Provider>
       <div className="slow-list">
         {Array.from({ length: 2000 }).map((_, idx) => (
-          <BaseItemWithTooltip key={idx} idx={idx} />
+          <LazyBaseItemWithTooltip key={idx} idx={idx} />
         ))}
       </div>
     </BaseTooltip.Provider>
@@ -230,11 +226,11 @@ export default function App() {
           </tr>
           <tr>
             <td>Base UI</td>
-            <td>180ms</td>
+            <td>600-700ms</td>
           </tr>
           <tr>
             <td>Base UI - detached with lazy activation</td>
-            <td>600-700ms</td>
+            <td>200ms</td>
           </tr>
           <tr>
             <td>No tooltips</td>
