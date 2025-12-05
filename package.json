@@ -5,16 +5,16 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "@base-ui-components/react": "1.0.0-rc.0",
+    "@base-ui-components/utils": "0.2.2",
     "@radix-ui/react-tooltip": "1.2.8",
     "afterframe": "1.0.2",
-    "react": "19",
-    "react-dom": "19",
-    "@base-ui-components/react": "1.0.0-beta.6",
-    "@base-ui-components/utils": "0.2.0"
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "5.1.1",
-    "vite": "7.2.4"
+    "vite": "7.2.6"
   },
   "scripts": {
     "dev": "vite",
